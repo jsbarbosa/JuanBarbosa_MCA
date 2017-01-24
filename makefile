@@ -1,6 +1,6 @@
-output.pdf : data.dat
+output.pdf : data.dat python.py
 	python python.py data.dat
 data.dat : a.out
 	./a.out > data.dat
-a.out : temp.c
-	gcc temp.c
+a.out : generator.c
+	gcc generator.c -lm
