@@ -1,6 +1,0 @@
-data.dat : output.pdf
-	python python.py data.dat
-a.out : data.dat
-	./a.out > data.dat
-temp.c : a.out
-	gcc temp.c
