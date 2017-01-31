@@ -1,5 +1,5 @@
 /*
- * generator.c
+ * sender.c
  * 
  * Copyright 2017 juan <juan@lenovo>
  * 
@@ -22,37 +22,37 @@
  */
 
 #include <mpi.h>
+#include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(int argc, char** argv) {
-  // Initialize the MPI environment
-  MPI_Init(NULL, NULL);
-  // Find out rank, size
-  int world_rank;
-  MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
-  int world_size;
-  MPI_Comm_size(MPI_COMM_WORLD, &world_size);
+int main(int argc, char** argv) 
+{
+    MPI_Init(NULL, NULL);
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    int size;
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
 
-  // We are assuming at least 2 processes for this task
-  if (world_size < 2) {
-    fprintf(stderr, "World size must be greater than 1 for %s\n", argv[0]);
-    MPI_Abort(MPI_COMM_WORLD, 1);
-  }
+    srand48(time(NULL) + rank);
+
     float adder = 0;
-  float number;
-  if (world_rank == 0) {
-    // If we are rank 0, set the number to -1 and send it to process 1
-    for(i=1; i<world_size; i++)
+    float number;
+    int i;
+
+    if (rank == 0) 
     {
-        MPI_Recv(&number, 1, MPI_INT, i, 0, MPI_COMM_WORLD);
-        adder += number;
+        for(i=1; i<size; i++)
+        {
+            MPI_Recv(&number, 1, MPI_INT, i, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+            adder += number;
+        }
+        printf("%f\n", adder);
+    } 
+    else if (rank != 0) 
+    {
+        number = drand48();
+        MPI_Send(&number, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
     }
-    printf("%f", adder);
-    
-  } else if (world_rank != 0) {
-      number = srand48()
-    MPI_Send(&number, 1, MPI_INT, 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-  }
-  MPI_Finalize();
+    MPI_Finalize();
 }
