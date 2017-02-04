@@ -30,9 +30,7 @@
 
 int generator(int num_elements){
     float x, y, r;
-    int count = 0;
-    
-    int i = 0;
+    int count = 0, i = 0;
     for (i; i < num_elements; i++)
     {
         x = drand48();
@@ -48,24 +46,25 @@ int generator(int num_elements){
 
 int main(int argc, char** argv) 
 {
+    int rank, size;
+    
     MPI_Init(NULL, NULL);
-    int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    int size;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
+    
     srand48(time(NULL) + rank);
 
     int num_elements_per_proc = atoi(argv[1]);
-    int sum = 0, i;
-    float denom = size*num_elements_per_proc;
     int each = generator(num_elements_per_proc);
-    
     int *all = (int*)malloc(sizeof(int)*size);
     assert(all != NULL);
-    MPI_Allgather(&each, 1, MPI_INT, all, 1, MPI_INT, MPI_COMM_WORLD);
     
+    float denom = size*num_elements_per_proc;
+    
+    MPI_Allgather(&each, 1, MPI_INT, all, 1, MPI_INT, MPI_COMM_WORLD);
     if (rank == 0)
     {
+        int sum = 0, i;
         for(i = 0; i < size; i++)
         {
             sum = sum + all[i];
