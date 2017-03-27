@@ -61,7 +61,7 @@ int main(int argc, char** argv)
     
     float denom = size*num_elements_per_proc;
     
-    MPI_Allgather(&each, 1, MPI_INT, all, 1, MPI_INT, MPI_COMM_WORLD);
+    MPI_Gather(&each, 1, MPI_INT, all, 1, MPI_INT, 0,MPI_COMM_WORLD);
     if (rank == 0)
     {
         int sum = 0, i;

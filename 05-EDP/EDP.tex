@@ -1,0 +1,17 @@
+\documentclass[10pt]{article}
+\usepackage{amsmath}
+%opening
+
+\begin{document}
+\section{Lax}
+\begin{equation}
+	U_i^{n+1} = \dfrac{1}{2}\left(U_{i+1}^n+U_{i-1}^n\right) - \dfrac{\Delta t}{2\Delta x}\left(F_{i+1}^n - F_{i-1}^n\right)
+\end{equation}
+\section{MacCormack}
+\begin{equation}
+	U_i^* = U_i^n + \dfrac{\Delta t}{\Delta x}\left(F_{i+1}^n - F_i^n \right)
+\end{equation}
+\begin{equation}
+	U_i^{n+1} = \dfrac{1}{2}\left[U_i^n + U_i^*\left(F_i* - F_{i-1}^*\right)\right]
+\end{equation}
+\end{document}
