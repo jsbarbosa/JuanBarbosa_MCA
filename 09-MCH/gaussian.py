@@ -43,6 +43,3 @@ q, p = chain(10000)
 plt.hist(q[500:], bins=20, normed=True)
 #plt.plot(q, p)
 plt.show()
-
-
-	
